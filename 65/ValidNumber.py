@@ -42,8 +42,8 @@ class Solution(object):
             status_not_number,  status_end_number_with_e,        status_not_number,        status_not_number, status_not_number,  # status_symbol_after_e
         ]
         current_status = 0
-        for i in range(0, len(s)):
-            input_type = self.inputType(s[i])
+        for c in s:
+            input_type = self.inputType(c)
             if input_type == 5:  # input_other
                 return False
             current_status = transtionMatrix[current_status * 5 + input_type]
