@@ -1,2 +1,2 @@
 # LeetCode-Solutions-in-Python
-LeetCode Solutions in Python for my wife.
+LeetCode everyday to prevent Alzheimer's Disease.
