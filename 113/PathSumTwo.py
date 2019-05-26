@@ -13,5 +13,3 @@ class Solution:
         :type sum: int
         :rtype: List[List[int]]
         """
-
-if __name__ == '__main__':

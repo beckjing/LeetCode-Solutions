@@ -8,4 +8,4 @@
 
 import random
 
-print(random.randint(0, 1049))
+print(random.randint(0, 1050))
