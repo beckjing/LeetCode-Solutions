@@ -1,2 +1,2 @@
-# LeetCode-Solutions-in-Python
+# LeetCode-Solutions
 LeetCode everyday to prevent Alzheimer's Disease.
