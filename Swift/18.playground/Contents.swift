@@ -2,40 +2,45 @@ import UIKit
 
 class Solution {
     func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
-        var result = self.fourSum(nums, target, level: 3)
-        var resultSet = Set<Array<Int>>()
-        for res in result {
-            resultSet.insert(res.sorted())
-        }
-        var sortResult = [[Int]]()
-        for res in resultSet {
-            sortResult.append(res)
-        }
-        return sortResult
-    }
-    
-    func fourSum(_ nums: [Int], _ target: Int, level: Int) -> [[Int]] {
+        let nCount = nums.count
         var result = [[Int]]()
-        let numsCount = nums.count
-        if level == 0 {
-            for num in nums {
-                if num == target {
-                    result.append([num])
-                    return result
-                }
-            }
+        if nCount < 4 {
             return result
         }
-        for i in 0..<numsCount {
-            var subNums = nums
-            let subNum = nums[i]
-            subNums.remove(at: i)
-            let subRes = self.fourSum(subNums, target - subNum, level: (level - 1))
-            if subRes.count > 0 {
-                for subre in subRes {
-                    var subResult = subre
-                    subResult.append(subNum)
-                    result.append(subResult)
+        let numsSorted = nums.sorted()
+        for first in 0...(nCount - 4) {
+            if first > 0 && numsSorted[first] == numsSorted[first - 1] {
+                continue
+            }
+            for second in (first + 1)...(nCount - 3) {
+                if second > first + 1 && numsSorted[second] == numsSorted[second - 1] {
+                    continue
+                }
+                var third = second + 1
+                var fourth = nCount - 1
+                while third < fourth {
+                    let pre = numsSorted[first] + numsSorted[second] - target
+                    let end = numsSorted[third] + numsSorted[fourth]
+                    if pre < -end {
+                        third += 1
+                    }
+                    else if pre > -end {
+                        fourth -= 1
+                    }
+                    else {
+                        result.append([numsSorted[first],
+                                       numsSorted[second],
+                                       numsSorted[third],
+                                       numsSorted[fourth]])
+                        while third < fourth && numsSorted[third] == numsSorted[third + 1] {
+                            third += 1
+                        }
+                        while third < fourth && numsSorted[fourth - 1] == numsSorted[fourth] {
+                            fourth -= 1
+                        }
+                        third += 1
+                        fourth -= 1
+                    }
                 }
             }
         }
