@@ -1,22 +1,18 @@
 import UIKit
 
 class ListNode {
-    
     var pre: ListNode?
     var next: ListNode?
     var val: Int?
-    
     init(val: Int?) {
         self.val = val
     }
-    
 }
 
 class Dequeue {
     
-    var head = ListNode(val: nil)
+    let head = ListNode(val: nil)
     var tail = ListNode(val: nil)
-    
     init () {
         self.head.next = self.tail
         self.tail.pre  = self.head
@@ -59,10 +55,12 @@ class Dequeue {
 
 class Solution {
     
-    
     func maxSlidingWindow(_ nums: [Int], _ k: Int) -> [Int] {
         let nCount = nums.count
         var result = [Int]()
+        if nCount == 0 {
+            return result
+        }
         let dequeue = Dequeue()
         for i in 0..<k {
             while dequeue.last() != nil && nums[dequeue.last()!] < nums[i] {
@@ -71,9 +69,8 @@ class Solution {
             dequeue.append(val: i)
         }
         result.append(nums[dequeue.first()!])
-        var left = 0
         for i in k..<nCount {
-            left = i - k + 1
+            let left = i - k + 1
             while dequeue.last() != nil && nums[dequeue.last()!] < nums[i] {
                 dequeue.popLast()
             }
@@ -87,4 +84,4 @@ class Solution {
     }
 }
 
-Solution().maxSlidingWindow([1,3,-1,-3,5,3,6,7], 3)
+print(Solution().maxSlidingWindow([1,3,-1,-3,5,3,6,7], 3))
