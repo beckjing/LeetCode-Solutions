@@ -2,22 +2,18 @@ import UIKit
 
 class Solution {
     func findMin(_ nums: [Int]) -> Int {
-        let nCount = nums.count
-        if nCount == 1 {
-            return nums.first!
-        }
-        else if nCount == 2 || nums.first! < nums.last! {
-            return min(nums.first!, nums.last!)
-        }
         var start = 0
-        var end = nCount - 1
+        var end = nums.count - 1
         while start < end {
-            let middle = (start + end) / 2
-            if nums[middle] >= nums.first! {
+            let middle = start + (end - start) / 2
+            if nums[middle] > nums[end] {
                 start = middle + 1
             }
-            else if nums[middle] < nums.last!  {
+            else if nums[middle] < nums[end] {
                 end = middle
+            }
+            else {
+                end -= 1
             }
         }
         return nums[start]

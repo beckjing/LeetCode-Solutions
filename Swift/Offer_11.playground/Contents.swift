@@ -1,23 +1,24 @@
 import UIKit
 
 class Solution {
-    func findMin(_ nums: [Int]) -> Int {
+    func minArray(_ numbers: [Int]) -> Int {
+        let nCount = numbers.count
         var start = 0
-        var end = nums.count - 1
+        var end = nCount - 1
         while start < end {
             let middle = start + (end - start) / 2
-            if nums[middle] < nums[end] {
+            if numbers[middle] < numbers[end] {
                 end = middle
             }
-            else if nums[middle] > nums[end] {
+            else if numbers[middle] > numbers[end] {
                 start = middle + 1
             }
             else {
                 end -= 1
             }
         }
-        return nums[start]
+        return numbers[start]
     }
 }
 
-Solution().findMin([2,2,2,0,1])
+print(Solution().minArray([10,1,10,10,10]))
