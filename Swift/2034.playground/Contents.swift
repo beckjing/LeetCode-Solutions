@@ -1,96 +1,60 @@
 import UIKit
 
-public class Node {
-    
-    var price: Int?
-    var timestamp: Int?
-    var pre: Node?
-    var next: Node?
-    
-    init(_ timestamp: Int, _ price: Int) {
-        self.timestamp = timestamp
-        self.price = price
-    }
-    
-}
-
 class StockPrice {
     
-    var nodeDic = Dictionary<Int, Node>()
-    var nodeArr = Array<Node>()
-    var timeBigNode: Node?
+    var nodeDic = Dictionary<Int, Int>()
+    var currentTime: Int = 0
+    var minPrice = (0, 0)
+    var maxPrice = (0, 0)
     
     init() {
         
     }
     
     func update(_ timestamp: Int, _ price: Int) {
-        if nodeDic[timestamp] == nil {
-            nodeDic[timestamp] = Node(timestamp, price)
-            self.insert(nodeDic[timestamp]!)
+        self.nodeDic[timestamp] = price
+        if self.currentTime == 0 {
+            self.minPrice = (timestamp, price)
+            self.maxPrice = (timestamp, price)
         }
         else {
-            self.delete(nodeDic[timestamp]!)
-            nodeDic[timestamp]!.price = price
-            self.insert(nodeDic[timestamp]!)
-        }
-        if self.timeBigNode == nil || self.timeBigNode!.timestamp! < timestamp {
-            self.timeBigNode = nodeDic[timestamp]
-        }
-    }
-    
-    func insert(_ node: Node) {
-        let nCount = self.nodeArr.count
-        var start = 0
-        var end = nCount - 1
-        while start <= end {
-            let middle = start + (end - start) / 2
-            if self.nodeArr[middle].price! > node.price! {
-                end = middle - 1
-            }
-            else if self.nodeArr[middle].price! < node.price! {
-                start = middle + 1
-            }
-            else {
-                end -= 1
-            }
-        }
-        self.nodeArr.insert(node, at: start)
-    }
-    
-    func delete(_ node: Node) {
-        let nCount = self.nodeArr.count
-        var start = 0
-        var end = nCount - 1
-        while start < end {
-            let middle = start + (end - start) / 2
-            if self.nodeArr[middle].price! > node.price! {
-                end = middle
-            }
-            else if self.nodeArr[middle].price! < node.price! {
-                start = middle + 1
-            }
-            else {
-                if self.nodeArr[end].timestamp != node.timestamp {
-                    end -= 1
+            if timestamp == self.minPrice.0 || timestamp == self.maxPrice.0 {
+                var min = self.nodeDic.first
+                var max = self.nodeDic.first
+                for (k, v) in self.nodeDic {
+                    if v < min!.value {
+                        min!.key = k
+                        min!.value = v
+                    }
+                    if v > max!.value {
+                        max?.key = k
+                        max?.value = v
+                    }
                 }
-                else {
-                    start = end
+                self.maxPrice = (max!.key, max!.value)
+                self.minPrice = (min!.key, min!.value)
+            }
+            else {
+                if price > self.maxPrice.1 {
+                    self.maxPrice = (timestamp, price)
+                }
+                if price < self.minPrice.1 {
+                    self.minPrice = (timestamp, price)
                 }
             }
         }
-        self.nodeArr.remove(at: start)
+        self.currentTime = max(timestamp, self.currentTime)
     }
     
     func current() -> Int {
-        return self.timeBigNode!.price!
+        return self.nodeDic[self.currentTime]!
     }
     
     func maximum() -> Int {
-        return self.nodeArr.last!.price!
+        return self.maxPrice.1
     }
     
     func minimum() -> Int {
-        return self.nodeArr.first!.price!
+        return self.minPrice.1
     }
 }

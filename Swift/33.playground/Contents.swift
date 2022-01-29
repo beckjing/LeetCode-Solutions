@@ -2,54 +2,34 @@ import UIKit
 
 class Solution {
     func search(_ nums: [Int], _ target: Int) -> Int {
-        var k = 0
         let nCount = nums.count
-        if nCount == 1 {
-            if nums.first == target {
-                return 0
-            }
+        if nCount == 0 {
+            return -1
         }
-        else {
-            for i in 1..<nCount {
-                if nums[nCount - i - 1] > nums[nCount - i] {
-                    k = i
-                    break
+        if nCount == 1 {
+            return nums.first == target ? 0 : -1
+        }
+        var start = 0
+        var end = nCount - 1
+        while start <= end {
+            let middle = start + (end - start) / 2
+            if nums[middle] == target {
+                return middle
+            }
+            if nums[0] <= nums[middle] {
+                if nums[0] <= target && target < nums[middle] {
+                    end = middle - 1
+                }
+                else {
+                    start = middle + 1
                 }
             }
-            if target < nums[(nCount - k) % nCount] || target > nums[nCount - k - 1] {
-                return -1
-            }
-            
-            if target >= nums.first! {
-                var start = 0
-                var end = nCount - k - 1
-                while start <= end {
-                    let middle = (start + end) / 2
-                    if nums[middle] < target {
-                        start = middle + 1
-                    }
-                    else if nums[middle] > target {
-                        end = middle - 1
-                    }
-                    else {
-                        return middle
-                    }
+            else {
+                if nums[middle] < target && target <= nums[nCount - 1] {
+                    start = middle + 1
                 }
-            }
-            else if target <= nums.last! {
-                var start = nCount - k
-                var end = nCount - 1
-                while start <= end {
-                    let middle = (start + end) / 2
-                    if nums[middle] < target {
-                        start = middle + 1
-                    }
-                    else if nums[middle] > target {
-                        end = middle - 1
-                    }
-                    else {
-                        return middle
-                    }
+                else {
+                    end = middle - 1
                 }
             }
         }
@@ -57,4 +37,4 @@ class Solution {
     }
 }
 
-Solution().search([4,5,6,7,0,1,2], 0)
+Solution().search([4,5,6,7,0,1,2], 3)
